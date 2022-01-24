@@ -17,13 +17,6 @@ export default function BooksList(props) {
 	const { authorization } = customerHeaders;
 
 	useEffect(() => {
-		async function fetchData() {
-			try {
-				const { headers } = await API.getNewToken();
-				setCustomerHeaders(headers);
-			} catch (e) {}
-		}
-
 		async function getBooksList() {
 			try {
 				const reqResult = await API.getBooks(
@@ -35,8 +28,17 @@ export default function BooksList(props) {
 			} catch (e) {}
 		}
 
+		async function fetchData() {
+			try {
+				const { headers } = await API.getNewToken();
+				setCustomerHeaders(headers);
+				getBooksList();
+			} catch (e) {
+				setCustomerHeaders(undefined);
+			}
+		}
+
 		fetchData();
-		getBooksList();
 	}, [atualPage]);
 
 	const changeAtualPage = (page) => {
