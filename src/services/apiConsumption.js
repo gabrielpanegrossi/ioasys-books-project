@@ -69,6 +69,7 @@ async function getNewToken() {
 		}
 	} else {
 		Token.removeToken();
+		return undefined;
 	}
 }
 
