@@ -9,20 +9,6 @@ livros disponiveis naquela categoria assim como ao clicar em um livro, será abe
 
 ![image](https://drive.google.com/uc?export=view&id=15CR--Ypx9u00y2amuzbZnL3Eh0xb55aO)
 
-## Deploy
-
-Para fazer o deploy desse projeto execute
-
-```bash
-  npm run build
-```
-
-E posteriormente execute
-
-```bash
-  npm run start
-```
-
 ## Rodando localmente
 
 Clone o projeto
