@@ -1,34 +1,56 @@
-import axios from 'axios';
 import { useEffect, useContext } from 'react';
 import { useState } from 'react/cjs/react.development';
 
 import UserContext from '../../context/userContext';
+import { API } from '../../services/apiConsumption';
 
-export default function BooksList() {
-	const { REACT_APP_BACKEND_URL } = process.env;
-	const { customerIsLogged } = useContext(UserContext);
+import BookCard from './bookCard';
+import Pagination from './pagination';
+import * as S from './booksListStyle';
+
+export default function BooksList(props) {
+	const { customerHeaders, setCustomerHeaders } = useContext(UserContext);
 	const [booksList, setBookList] = useState([]);
+	const [categoryPages, setCategoryPages] = useState(0);
+	const [atualPage, setAtualPage] = useState(1);
 
-	const { authorization } = customerIsLogged.headers;
-
-	async function getBooksList() {
-		const list = await axios.get(
-			`${REACT_APP_BACKEND_URL}books?page=1&amount=25&category=biographies`,
-			{ headers: { authorization: `Bearer ${authorization}` } }
-		);
-
-		setBookList(list.data.data);
-	}
+	const { authorization } = customerHeaders;
 
 	useEffect(() => {
+		async function fetchData() {
+			try {
+				const { headers } = await API.getNewToken();
+				setCustomerHeaders(headers);
+			} catch (e) {}
+		}
+
+		async function getBooksList() {
+			try {
+				const reqResult = await API.getBooks(
+					authorization,
+					atualPage ? atualPage : 1
+				);
+				setBookList(reqResult.data.data);
+				setCategoryPages(reqResult.data);
+			} catch (e) {}
+		}
+
+		fetchData();
 		getBooksList();
-	}, []);
+	}, [atualPage]);
+
+	const changeAtualPage = (page) => {
+		setAtualPage(page);
+	};
 
 	return (
-		<>
-			{booksList.map((el, index) => {
-				return <div key={index}>{el.title}</div>;
-			})}
-		</>
+		<S.bookListContainer>
+			<S.bookListHandler>
+				{booksList.map((el, index) => (
+					<BookCard click={props.openBookModal} key={index} bookId={el.id} />
+				))}
+			</S.bookListHandler>
+			<Pagination pages={categoryPages} changePageFunction={changeAtualPage} />
+		</S.bookListContainer>
 	);
 }

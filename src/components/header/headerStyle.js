@@ -19,17 +19,6 @@ export const HeaderHandler = styled.div`
 			margin-right: 16px;
 		}
 
-		> div {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 32px;
-			width: 32px;
-			margin-top: 4px;
-			border: 1px solid rgba(51, 51, 51, 0.2);
-			border-radius: 50%;
-		}
-
 		@media (min-width: 769px) {
 			> span {
 				display: block;

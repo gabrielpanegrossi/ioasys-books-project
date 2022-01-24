@@ -1,17 +1,23 @@
 import { useContext } from 'react';
 
 import UserContext from '../../context/userContext';
+import { Token } from '../../services/userToken';
 
 import SystemTitle from '../systemTitle';
+import CircleButton from '../circleButton';
 import { FiLogOut } from 'react-icons/fi';
 
 import * as S from './headerStyle';
 
 export default function Header() {
-	const { customerIsLogged, setCustomerIsLogged } = useContext(UserContext);
-	console.log(customerIsLogged);
+	const { customerInformation, setCustomerInformation, setCustomerHeaders } =
+		useContext(UserContext);
 
-	const { data } = customerIsLogged;
+	function Logout() {
+		Token.removeToken();
+		setCustomerHeaders(undefined);
+		setCustomerInformation(undefined);
+	}
 
 	return (
 		<S.Header>
@@ -19,12 +25,12 @@ export default function Header() {
 				<SystemTitle />
 				<div className="customer">
 					<span>
-						Bem vind{data.gender !== 'M' ? 'a' : 'o'},{' '}
-						<strong>{data.name}</strong>
+						Bem vind{customerInformation.gender !== 'M' ? 'a' : 'o'},{' '}
+						<strong>{customerInformation.name}</strong>
 					</span>
-					<div onClick={() => setCustomerIsLogged(undefined)}>
+					<CircleButton click={Logout}>
 						<FiLogOut />
-					</div>
+					</CircleButton>
 				</div>
 			</S.HeaderHandler>
 		</S.Header>

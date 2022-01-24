@@ -1,20 +1,20 @@
 import { useContext, useState } from 'react';
-import axios from 'axios';
+import { withRouter } from 'react-router-dom/cjs/react-router-dom.min';
 
 import UserContext from '../../context/userContext';
+import { API } from '../../services/apiConsumption';
 
 import InputField from '../inputField';
 import FieldValidationError from '../fieldValidationError/fieldValidationError';
 
 import * as S from './loginFormsStyle';
 
-const { REACT_APP_BACKEND_URL } = process.env;
-
-export default function LoginForms() {
+function LoginForms(props) {
 	const [email, setEmail] = useState(undefined);
 	const [password, setPassword] = useState(undefined);
 	const [errorOnLogin, setErrorOnLogin] = useState(false);
-	const { setCustomerIsLogged } = useContext(UserContext);
+	const { setCustomerInformation, setCustomerHeaders } =
+		useContext(UserContext);
 
 	function inputSetEmail(e) {
 		setEmail(e.target.value);
@@ -29,23 +29,19 @@ export default function LoginForms() {
 		let status, error;
 
 		if (email && password) {
-			const data = { email, password };
-
 			try {
-				status = await axios.post(`${REACT_APP_BACKEND_URL}auth/sign-in`, data);
-				const refreshToken = status.headers['refresh-token'];
-				const teste = await axios.post(
-					'https://books.ioasys.com.br/api/v1/auth/refresh-token',
-					{ refreshToken }
-				);
-				console.log(teste);
+				status = await API.signIn(email, password);
 			} catch (e) {
 				error = e;
 			}
 		}
 
 		error ? setErrorOnLogin(true) : setErrorOnLogin(false);
-		status && setCustomerIsLogged(status);
+		if (status) {
+			setCustomerHeaders(status.headers);
+			setCustomerInformation(status.data);
+			props.history.push('/books');
+		}
 	}
 
 	return (
@@ -73,3 +69,5 @@ export default function LoginForms() {
 		</S.loginFormsContainer>
 	);
 }
+
+export default withRouter(LoginForms);

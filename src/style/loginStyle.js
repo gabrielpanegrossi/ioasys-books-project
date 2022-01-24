@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const LoginContainer = styled.main`
 	height: 100vh;
 	width: 100%;
-	background-image: url('assets/img/bg.png');
+	background-image: url('assets/img/login-bg.png');
 	background-size: cover;
 
 	@media (min-width: 769px) {
