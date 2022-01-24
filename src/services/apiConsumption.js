@@ -12,7 +12,8 @@ async function signIn(email, password) {
 	Token.saveToken(
 		reqReturn.headers.authorization,
 		reqReturn.headers['refresh-token'],
-		reqReturn.data.name
+		reqReturn.data.name,
+		reqReturn.data.gender
 	);
 
 	return reqReturn;
@@ -62,6 +63,8 @@ async function getNewToken() {
 		const tokenRenewed = await renewToken(authorization, token);
 
 		return tokenRenewed;
+	} else {
+		Token.removeToken();
 	}
 }
 

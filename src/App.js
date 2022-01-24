@@ -24,11 +24,13 @@ function App() {
 			const userToken = Token.getToken();
 
 			if (userToken) {
-				const { name, authorization, token } = userToken;
-				setCustomerInformation({ name });
+				const { name, gender, authorization, token } = userToken;
+				setCustomerInformation({ name, gender });
 				setCustomerHeaders({ authorization, token });
 			}
-		} catch (e) {}
+		} catch (e) {
+			setCustomerHeaders({ undefined });
+		}
 	}, []);
 
 	return (
@@ -46,13 +48,13 @@ function App() {
 			>
 				<BrowserRouter>
 					{loader && <Loader />}
-					{!customerInformation ? (
-						<Login />
-					) : (
+					{customerInformation && customerHeaders ? (
 						<>
 							<Header />
 							<Route component={Books} path={'/books/:bookName'} path={'/'} />
 						</>
+					) : (
+						<Login />
 					)}
 				</BrowserRouter>
 			</UserContext.Provider>

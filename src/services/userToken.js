@@ -1,6 +1,7 @@
-function saveToken(authorization, token, name) {
+function saveToken(authorization, token, name, gender) {
 	const item = {
 		name,
+		gender,
 		token,
 		authorization,
 	};
