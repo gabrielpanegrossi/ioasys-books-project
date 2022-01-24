@@ -59,7 +59,7 @@ async function getNewToken() {
 	const tokenIsValid = await Token.getToken();
 	const { authorization, token } = tokenIsValid;
 
-	if (tokenIsValid) {
+	if (authorization && token) {
 		const tokenRenewed = await renewToken(authorization, token);
 
 		return tokenRenewed;
