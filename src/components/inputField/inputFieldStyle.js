@@ -9,6 +9,10 @@ export const InputFieldContainer = styled.div`
 	padding: 8px 16px;
 	background-color: rgba(0, 0, 0, 0.32);
 
+	input {
+		width: 100%;
+	}
+
 	button {
 		min-height: 36px;
 		min-width: 85px;
@@ -47,7 +51,7 @@ export const InputFieldHandler = styled.div`
 		}
 
 		&.password {
-			max-width: 158px;
+			width: 95%;
 		}
 	}
 `;
